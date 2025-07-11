@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Discount Coupons for {{ lot.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Coupon</button>
+</form>
+<table border="1">
+    <tr><th>Code</th><th>Discount %</th><th>Status</th><th>Actions</th></tr>
+    {% for c in coupons %}
+    <tr>
+        <td>{{ c.code }}</td>
+        <td>{{ c.discount_percent }}</td>
+        <td>
+            {% if c.is_active %}
+                Active
+            {% else %}
+                Inactive
+            {% endif %}
+        </td>
+        <td>
+            {% if c.is_active %}
+                 Active |
+                <a href="{% url 'toggle_coupon_status' c.id %}">Deactivate</a>
+            {% else %}
+                Inactive |
+                <a href="{% url 'toggle_coupon_status' c.id %}">Activate</a>
+            {% endif %}
+                | <a href="{% url 'edit_coupon' c.id %}">Edit</a>
+                | <a href="#" onclick="confirmCouponDelete('{{ c.id }}')">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No coupons added.</td></tr>
+    {% endfor %}
+</table>
+<a href="{% url 'list_lots' %}">Back to Lots</a>
+
+<script>
+function confirmCouponDelete(couponId) {
+    if (confirm("Are you sure you want to delete this discount coupon?")) {
+        window.location.href = "/discounts/delete/" + couponId + "/";
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Super Admin Dashboard</h2>
+<table border="1">
+    <tr><th>Email</th><th>Location</th><th>Capacity</th></tr>
+    {% for owner in owners %}
+    <tr>
+        <td>{{ owner.email }}</td>
+        <td>{{ owner.parkingspace.location }}</td>
+        <td>{{ owner.parkingspace.capacity }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No owners yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

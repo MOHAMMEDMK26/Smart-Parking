@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Revenue Dashboard</h2>
+<table border="1">
+    <tr><th>Daily</th><th>Weekly</th><th>Monthly</th></tr>
+    <tr>
+        <td>₹{{ daily }}</td>
+        <td>₹{{ weekly }}</td>
+        <td>₹{{ monthly }}</td>
+    </tr>
+</table>
+
+<h3>Transaction History</h3>
+<table border="1">
+    <tr><th>Lot</th><th>Slot</th><th>Amount</th><th>Timestamp</th><th>Note</th></tr>
+    {% for t in transactions %}
+    <tr>
+        <td>{{ t.lot.name }}</td>
+        <td>{{ t.slot.slot_number }}</td>
+        <td>₹{{ t.amount }}</td>
+        <td>{{ t.timestamp }}</td>
+        <td>{{ t.note }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No transactions yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

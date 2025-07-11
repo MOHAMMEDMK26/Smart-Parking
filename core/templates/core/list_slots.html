@@ -1,0 +1,24 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Slots for {{ lot.name }}</h2>
+<a href="{% url 'add_slot' lot.id %}">Add Slot</a>
+<table border="1">
+    <tr>
+        <th>Slot Number</th><th>Status</th><th>Actions</th>
+    </tr>
+    {% for slot in slots %}
+    <tr>
+        <td>{{ slot.slot_number }}</td>
+        <td>{% if slot.is_occupied %}Occupied{% else %}Vacant{% endif %}</td>
+        <td>
+            <a href="{% url 'toggle_slot_status' slot.id %}">
+                {% if slot.is_occupied %}Mark Vacant{% else %}Mark Occupied{% endif %}
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No slots found.</td></tr>
+    {% endfor %}
+</table>
+<a href="{% url 'list_lots' %}">Back to Lots</a>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>Parking Space Owners</h2>
+<table border="1">
+    <tr>
+        <th>Email</th>
+        <th>Space Name</th>
+        <th>Location</th>
+        <th>Capacity</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for owner in owners %}
+    <tr>
+        <td>{{ owner.email }}</td>
+        <td>{{ owner.parkingspace.name }}</td>
+        <td>{{ owner.parkingspace.location }}</td>
+        <td>{{ owner.parkingspace.capacity }}</td>
+        <td>
+            {% if owner.is_active %}Active{% else %}Inactive{% endif %}
+        </td>
+        <td>
+            <a href="{% url 'edit_owner' owner.id %}">Edit</a> |
+            <a href="#" onclick="confirmOwnerToggle('{{ owner.id }}', '{{ owner.is_active }}')">
+                {% if owner.is_active %}Deactivate{% else %}Activate{% endif %}
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No owners found.</td></tr>
+    {% endfor %}
+</table>
+
+<script>
+function confirmOwnerToggle(ownerId, isActive) {
+    let action = (isActive === "True") ? "deactivate" : "activate";
+    if (confirm("Are you sure you want to " + action + " this owner?")) {
+        window.location.href = "/owners/toggle/" + ownerId + "/";
+    }
+}
+</script>
+{% endblock %}

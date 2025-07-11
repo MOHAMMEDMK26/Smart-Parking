@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Parking</title>
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "{% url 'logout' %}";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div style="background-color: #eee; padding: 10px;">
+
+        {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                | <a href="{% url 'list_owners' %}">Owners</a>
+                | <a href="{% url 'create_owner' %}">Create Owner</a>
+            {% elif user.is_staff %}
+                | <a href="{% url 'revenue_dashboard' %}">Dashboard</a>
+                | <a href="{% url 'list_lots' %}">Lots</a>
+                | <a href="{% url 'my_notifications' %}">Notifications</a>
+            {% endif %}
+            | <a href="#" onclick="confirmLogout()">Logout</a>
+        {% else %}
+            | <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>
